@@ -1,0 +1,81 @@
+/* Alba · complementos de estilo sobre el lenguaje visual de la app de horarios */
+#alba-login { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--bg); }
+#alba-login[hidden] { display: none; }
+.alba-login-card { width: 100%; max-width: 380px; padding: 28px 26px; text-align: left; border-top: 4px double var(--rule); }
+.alba-login-card h1 { font-family: var(--font-head); font-weight: 400; font-size: 34px; margin: 6px 0 0; letter-spacing: .04em; }
+.alba-login-gallo { width: 74px; height: auto; display: block; opacity: .9; }
+.alba-login-msg { min-height: 20px; color: var(--bad); font-size: .9rem; margin: 10px 0 0; }
+.alba-usuario { display: inline-flex; align-items: center; gap: 8px; margin-left: 12px; font-size: .82rem; color: var(--header-fg); white-space: nowrap; }
+.alba-usuario .btn { color: var(--header-fg); border-color: color-mix(in srgb, var(--header-fg) 40%, transparent); min-height: 32px; padding: 4px 10px; }
+.alba-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.alba-tipos { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.alba-tipo { text-align: left; padding: 10px 12px; background: transparent; border: var(--hair); border-left: 4px solid var(--line); cursor: pointer; font: inherit; color: var(--fg); border-radius: var(--r); }
+.alba-tipo b { display: block; }
+.alba-tipo span { font-size: .8rem; color: var(--muted); }
+.alba-tipo.on { border-color: var(--primary); border-left-color: var(--accent); background: var(--accent-soft); }
+.alba-num { max-width: 110px; text-align: right; }
+.alba-txt { min-height: 130px; font-family: ui-monospace, Consolas, monospace; font-size: 13px; border: var(--hair); padding: 8px; }
+.alba-pax { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 520px; }
+.alba-pax .btn { font-family: var(--font-head); font-size: 28px; min-height: 76px; }
+.alba-bar { height: 8px; background: var(--surface-2); position: relative; min-width: 120px; }
+.alba-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+.alba-fam { color: var(--accent); text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
+@media (max-width: 760px) { .alba-usuario { display: none; } }
+
+.nav-bot { overflow-x: auto; scrollbar-width: none; }
+.nav-bot::-webkit-scrollbar { display: none; }
+.nav-bot a { flex: 0 0 auto; min-width: 72px; }
+@media (min-width: 761px) and (max-width: 1180px) { .nav-top a span { display: none; } }
+
+/* ---------- supervisión móvil ---------- */
+.alba-solo-movil { display: none; }
+@media (max-width: 760px) { .alba-solo-movil { display: inline-flex; } }
+.sv-plantillas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.sv-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 12px; margin: 0 0 12px; background: var(--surface, var(--bg)); border-bottom: var(--hair); }
+.sv-prog { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.sv-bloque h2 { display: flex; justify-content: space-between; align-items: baseline; }
+.sv-item { padding: 12px 0; border-top: var(--hair); scroll-margin-top: 90px; }
+.sv-item:first-of-type { border-top: 0; }
+.sv-item.sv-crit .sv-q { font-weight: 600; }
+.sv-item.sv-falla { box-shadow: inset 4px 0 0 var(--bad); padding-left: 10px; }
+.sv-item.sv-ok { box-shadow: inset 4px 0 0 var(--ok, #3c7a52); padding-left: 10px; }
+.sv-item.sv-ir { outline: 3px solid var(--accent); outline-offset: 4px; }
+.sv-q { line-height: 1.35; }
+.sv-cod { font-family: ui-monospace, Consolas, monospace; font-size: .78rem; color: var(--muted); }
+.sv-ayuda { font-size: .82rem; color: var(--muted); margin: 4px 0 0; }
+.sv-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; max-width: 520px; }
+.sv-b { min-height: 48px; border: var(--hair); background: transparent; color: var(--fg); font: inherit; font-weight: 600; border-radius: var(--r); cursor: pointer; padding: 6px 10px; }
+.sv-b.on.sv-b-ok { background: var(--ok, #3c7a52); color: #fff; border-color: transparent; }
+.sv-b.on.sv-b-bad { background: var(--bad); color: #fff; border-color: transparent; }
+.sv-b.on.sv-b-na { background: var(--surface-2); border-color: var(--fg); }
+.sv-b:disabled { opacity: .7; cursor: default; }
+.sv-num { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.sv-num .inp { max-width: 130px; font-size: 1.15rem; min-height: 48px; text-align: right; }
+.sv-obsw { display: none; margin-top: 8px; }
+.sv-obsw.abierta, .sv-item.sv-ok .sv-obsw, .sv-item.sv-na .sv-obsw { display: block; }
+.sv-item.sv-pend .sv-obsw:not(.abierta) { display: none; }
+.sv-obs { width: 100%; min-height: 54px; font-size: 1rem; }
+.sv-accion { margin-top: 8px; }
+.sv-fotos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.sv-foto { border: var(--hair); background: var(--surface-2); padding: 6px 10px; border-radius: var(--r); cursor: pointer; font: inherit; }
+.sv-camara { cursor: pointer; }
+.sv-sinfoto { display: flex; gap: 6px; align-items: center; }
+.sv-trs { display: grid; gap: 8px; }
+.sv-tr { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: var(--hair); }
+.sv-tr:first-child { border-top: 0; }
+.sv-inf-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.sv-sello { font-size: .72rem; word-break: break-all; }
+.alba-legal { max-width: 760px; width: 100%; max-height: 88vh; overflow: auto; }
+.alba-legal-txt { font-size: .9rem; line-height: 1.5; }
+.alba-legal-txt h3 { margin: 14px 0 4px; font-size: 1rem; }
+.alba-pie { text-align: center; font-size: .76rem; color: var(--muted); padding: 18px 12px 90px; }
+.alba-pie a { color: inherit; }
+@media (max-width: 760px) {
+  .sv-top { margin: -8px -8px 12px; }
+  .sv-seg { max-width: none; }
+  .sv-tr { flex-direction: column; align-items: flex-start; }
+}
+@media print {
+  .no-print, header.top, nav, .nav-bot, #alba-pie, .alba-usuario { display: none !important; }
+  .card { box-shadow: none !important; border: 0 !important; }
+}
