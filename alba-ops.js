@@ -578,12 +578,13 @@
 
   /* ---------- integración con el enrutador ---------- */
   window.AlbaOps = {
-    rutas: function () { return RUTAS.filter(function (r) { return r[3](); }).map(function (r) { return [r[0], r[1], r[2]]; }).concat(window.AlbaSup ? AlbaSup.rutas() : []); },
-    iconos: Object.assign({}, ICONOS, window.AlbaSup ? AlbaSup.iconos : {}),
-    tiene: function (r) { return RUTAS.some(function (x) { return x[0] === r && x[3](); }) || !!(window.AlbaSup && AlbaSup.tiene(r)); },
+    rutas: function () { return RUTAS.filter(function (r) { return r[3](); }).map(function (r) { return [r[0], r[1], r[2]]; }).concat(window.AlbaSup ? AlbaSup.rutas() : []).concat(window.AlbaEsc ? AlbaEsc.rutas() : []); },
+    iconos: Object.assign({}, ICONOS, window.AlbaSup ? AlbaSup.iconos : {}, window.AlbaEsc ? AlbaEsc.iconos : {}),
+    tiene: function (r) { return RUTAS.some(function (x) { return x[0] === r && x[3](); }) || !!(window.AlbaSup && AlbaSup.tiene(r)) || !!(window.AlbaEsc && AlbaEsc.tiene(r)); },
     vista: function (r) {
       suscribir();
       if (window.AlbaSup && AlbaSup.tiene(r)) return AlbaSup.vista(r);
+      if (window.AlbaEsc && AlbaEsc.tiene(r)) return AlbaEsc.vista(r);
       if (r === 'operacion') return viewOperacion();
       if (r === 'red') return viewRed();
       if (r === 'catalogo') return viewCatalogo();
@@ -597,6 +598,7 @@
       if (u.innerHTML !== txt) u.innerHTML = txt;
       suscribir();
       if (window.AlbaSup) AlbaSup.despues();
+      if (window.AlbaEsc) AlbaEsc.despues();
     },
     suscribir: suscribir
   };

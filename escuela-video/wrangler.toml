@@ -1,0 +1,14 @@
+# Escuela Galletti - servidor de video (Cloudflare Workers, plan gratuito)
+name = "galletti-escuela-video"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[[r2_buckets]]
+binding = "VIDEOS"
+bucket_name = "galletti-escuela"
+
+[vars]
+# Dominios desde donde se abre Alba (separados por coma). Agregue el dominio propio cuando exista.
+ORIGENES = "https://christiandavidvasquez-coder.github.io"
+
+# El secreto NO va aquí. Se carga una sola vez con:  npx wrangler secret put TICKET_SECRET

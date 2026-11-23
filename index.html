@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Alba · Café Galletti</title>
-<meta name="theme-color" content="#1B2A4A"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/alba-192.png"><link rel="apple-touch-icon" href="icons/alba-192.png"><link rel="stylesheet" href="alba.css"><script>window.ALBA_NOMBRE="Alba";</script><script src="config.js"></script><script src="seed-kits.js"></script><script src="seed-sup.js"></script><script src="vendor/supabase.js"></script><script src="alba-core.js"></script><script src="alba-sup.js"></script><script src="alba-ops.js"></script>
+<meta name="theme-color" content="#1B2A4A"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/alba-192.png"><link rel="apple-touch-icon" href="icons/alba-192.png"><link rel="stylesheet" href="alba.css"><script>window.ALBA_NOMBRE="Alba";</script><script src="config.js"></script><script src="seed-kits.js"></script><script src="seed-sup.js"></script><script src="vendor/supabase.js"></script><script src="alba-core.js"></script><script src="alba-sup.js"></script><script src="alba-esc.js"></script><script src="alba-ops.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
 /* Layout: cabecera fija arriba, contenido de máx. 1240 px centrado, barra inferior de pestañas bajo 760 px.
@@ -1350,7 +1350,7 @@ var LocalStore = (function () {
       return true;
     });
     var o = window.AlbaOps ? AlbaOps.rutas() : [];
-    var orden = ['operacion', 'supervision', 'tienda', 'locales', 'red', 'central', 'equipo', 'configurar', 'catalogo'];
+    var orden = ['operacion', 'escuela', 'supervision', 'tienda', 'locales', 'red', 'central', 'equipo', 'configurar', 'catalogo'];
     return o.concat(h).sort(function (a, b) { return orden.indexOf(a[0]) - orden.indexOf(b[0]); });
   }
   function rutaInicial() { var A = window.Alba, r = A && A.rol ? A.rol() : ''; return r === 'tienda' ? 'operacion' : (r === 'auditor' || r === 'supervisor') ? 'supervision' : 'tienda'; }
