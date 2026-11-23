@@ -545,7 +545,7 @@
   document.addEventListener('click', function (ev) {
     var el = ev.target.closest('[data-sv]'); if (!el) return;
     var op = el.dataset.sv;
-    if (['tienda', 'num', 'obs', 'txt', 'foto', 'sinfoto', 'hf', 'bf', 'lf-tipo'].indexOf(op) >= 0) return;
+    if (['tienda', 'num', 'obs', 'txt', 'foto', 'sinfoto', 'hf', 'bf', 'lf-tipo', 'paquete'].indexOf(op) >= 0) return;
     if (op === 'cerrar-hoja') { if (ev.target === el || el.tagName === 'BUTTON') { var bg = el.closest('.sheet-bg'); if (bg) bg.remove(); } return; }
     ev.preventDefault();
     var v = visitaActiva();
