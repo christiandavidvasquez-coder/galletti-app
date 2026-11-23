@@ -194,7 +194,7 @@
   }
   function viewNueva() {
     var pls = plantillasPara();
-    if (!pls.length) return '<section class="card">' + vacio('No hay plantillas cargadas. La central las carga en Catálogo o se siembran al primer ingreso de la central.') + '</section>';
+    if (!pls.length) return '<section class="card">' + vacio('No hay plantillas cargadas. La central las carga en Catálogo, Plantillas, Paquete inicial.') + '</section>';
     var sel = S.plantSel && S.plantillas[S.plantSel] ? S.plantillas[S.plantSel] : pls[0];
     var h = '<section class="card"><h2>Empezar un registro</h2><div class="sv-plantillas">' + pls.map(function (p) {
       return '<button class="alba-tipo' + (p.id === sel.id ? ' on' : '') + '" data-sv="plant" data-v="' + esc(p.id) + '"><b>' + esc(p.nombre) + '</b><span>' + esc(p.id) + ' · ' + esc(p.frecuencia || '') + (p.puntua ? ' · puntúa sobre 100' : '') + '</span></button>';
@@ -647,12 +647,30 @@
   function vistaCatalogo() {
     suscribir();
     var pls = Object.keys(S.plantillas).sort().map(function (k) { return S.plantillas[k]; });
-    return '<section class="card" style="margin-bottom:14px"><h2>Plantillas de supervisión y auditoría</h2><p class="muted small">' + pls.length + ' plantillas. Cada registro guarda una copia de la plantilla con la que se hizo, así que editar una plantilla no cambia el historial. Al cambiar una plantilla, suba su número de versión.</p>' +
+    return '<section class="card" style="margin-bottom:14px"><h2>Paquete inicial</h2><p class="muted small">Carga de una sola vez el catálogo de kits, las plantillas de supervisión, el ciclo de locales y los textos legales desde el archivo <b>paquete_inicial_cafe_galletti.json</b>. Lo que ya exista con el mismo código se reemplaza.</p><label class="btn">Elegir archivo y cargar<input type="file" accept=".json,application/json" data-sv="paquete" hidden></label></section>' +
+      '<section class="card" style="margin-bottom:14px"><h2>Plantillas de supervisión y auditoría</h2><p class="muted small">' + pls.length + ' plantillas. Cada registro guarda una copia de la plantilla con la que se hizo, así que editar una plantilla no cambia el historial. Al cambiar una plantilla, suba su número de versión.</p>' +
       tabla(['Id', 'Nombre', 'Versión', 'Ítems', 'Puntúa'], pls.map(function (p) { return [esc(p.id), esc(p.nombre), esc(p.version || ''), itemsDe(p).length, p.puntua ? 'Sí (' + (p.umbral || 80) + ')' : 'No']; })) +
       '<details style="margin-top:12px"><summary>Editar en formato JSON (avanzado)</summary><textarea class="inp alba-txt" id="cp-json" style="min-height:320px">' + esc(JSON.stringify(pls, null, 1)) + '</textarea><button class="btn primary" style="margin-top:8px" data-sv="cp-save">Guardar plantillas</button></details></section>' +
       '<section class="card" style="margin-bottom:14px"><h2>Ciclo de vida de locales</h2><p class="muted small">Estados, transiciones (quién, compuerta, registro, motivo, doble aprobación) y campos de la ficha. La base aplica estas reglas en el servidor.</p><details><summary>Editar en formato JSON (avanzado)</summary><textarea class="inp alba-txt" id="cc-json" style="min-height:260px">' + esc(JSON.stringify(ciclo(), null, 1)) + '</textarea><button class="btn primary" style="margin-top:8px" data-sv="cc-save">Guardar ciclo</button></details></section>' +
       '<section class="card"><h2>Aviso de privacidad y términos</h2><p class="muted small">Versión vigente: ' + esc(legalVer()) + '. Al cambiar la versión, cada usuario debe volver a aceptar en su siguiente ingreso.</p><details><summary>Editar</summary><textarea class="inp alba-txt" id="cl-json" style="min-height:260px">' + esc(JSON.stringify(S.legal || {}, null, 1)) + '</textarea><button class="btn primary" style="margin-top:8px" data-sv="cl-save">Guardar textos</button></details></section>';
   }
+  document.addEventListener('change', function (ev) {
+    var el = ev.target; if (!el.dataset || el.dataset.sv !== 'paquete' || !el.files || !el.files[0]) return;
+    var fr = new FileReader();
+    fr.onload = function () {
+      var j; try { j = JSON.parse(fr.result); } catch (e) { return toast('El archivo no es un paquete válido', true); }
+      if (j.tipo !== 'paquete_inicial_cafe_galletti') return toast('El archivo no es el paquete inicial de Café Galletti', true);
+      guardar(function () {
+        var d = db(), p = Promise.resolve();
+        (j.kits || []).forEach(function (k) { p = p.then(function () { return d.collection('kits').doc(k.codigo).set(k); }); });
+        (j.plantillas || []).forEach(function (pl) { p = p.then(function () { return d.collection('plantillas').doc(pl.id).set(pl); }); });
+        if (j.ciclo) p = p.then(function () { return d.doc('opcfg/ciclo').set(j.ciclo); });
+        if (j.legal) p = p.then(function () { return d.doc('legal/textos').set(j.legal); });
+        return p;
+      }, 'Paquete cargado: ' + (j.kits || []).length + ' kits y ' + (j.plantillas || []).length + ' plantillas');
+    };
+    fr.readAsText(el.files[0]); el.value = '';
+  });
   document.addEventListener('click', function (ev) {
     var el = ev.target.closest('[data-sv="cp-save"],[data-sv="cc-save"],[data-sv="cl-save"]'); if (!el) return;
     var op = el.dataset.sv, txt = $(op === 'cp-save' ? 'cp-json' : op === 'cc-save' ? 'cc-json' : 'cl-json').value, j;
