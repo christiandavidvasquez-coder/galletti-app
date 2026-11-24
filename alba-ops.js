@@ -56,7 +56,7 @@
       if (!docs.length && !O.sembrado && window.ALBA_SEED_KITS && (A.modo === 'demo' || A.es('central'))) {
         O.sembrado = true;
         var p = Promise.resolve(); window.ALBA_SEED_KITS.forEach(function (k) { p = p.then(function () { return d.collection('kits').doc(k.codigo).set(k); }); });
-        p.then(function () { toast('Catálogo inicial de kits cargado (GAL-SK-001)'); }, function () {});
+        p.then(function () { toast('Catálogo inicial de kits cargado (GAL-SK-006)'); }, function () {});
       }
     });
     col('mov', function (docs) { O.mov = docs.map(function (x) { var m = x.data(); m.id = x.id; return m; }); });
@@ -413,7 +413,7 @@
         '<section class="card"><h2>Cuentas habilitadas</h2>' + tabla(['Correo', 'Rol', 'Tienda', 'Nombre', 'Estado', ''], em.map(function (e) { var p = O.perfiles[e]; return [esc(e), esc(p.rol), esc(p.tienda ? tiendaNom(p.tienda) : '-'), esc(p.nombre || ''), p.activo === false ? '<span class="pill">Inactiva</span>' : '<span class="pill ok">Activa</span>', e === (A.perfil && A.perfil.email) ? '' : '<button class="btn sm ghost" data-op="cu-act" data-id="' + esc(e) + '">' + (p.activo === false ? 'Activar' : 'Desactivar') + '</button>']; })) + '</section>';
     }
     var txt = O.kits.slice().sort(function (a, b) { return a.codigo < b.codigo ? -1 : 1; }).map(function (k) { return [k.codigo, k.nombre, k.familia || '', k.unidad || '', k.frio || '', k.vida || '', (k.contifico || []).map(function (c) { return c.codigo + '*' + c.factor; }).join(', '), k.activo === false ? 'no' : 'si'].join(' | '); }).join('\n');
-    return h + '<section class="card"><h2>Kits de servicio (GAL-SK-001)</h2><p class="muted small">Una línea por kit: código | nombre | familia | unidad | frío | vida útil | códigos Contífico con factor (CÓDIGO*factor, separados por coma) | activo (si/no). El factor convierte una venta en kits: una porción es 1 y una torta entera de 8 es 8 si el kit se cuenta en porciones.</p>' +
+    return h + '<section class="card"><h2>Kits de servicio (GAL-SK-006)</h2><p class="muted small">Una línea por kit: código | nombre | familia | unidad | frío | vida útil | códigos Contífico con factor (CÓDIGO*factor, separados por coma) | activo (si/no). El factor convierte una venta en kits: una porción es 1 y una torta entera de 8 es 8 si el kit se cuenta en porciones.</p>' +
       '<textarea class="inp alba-txt" id="kits-txt" style="min-height:320px">' + esc(txt) + '</textarea><div class="row" style="justify-content:flex-start;margin-top:12px"><button class="btn primary" data-op="kits-save">Guardar catálogo</button><span class="muted small" style="margin-left:12px">' + O.kits.length + ' kits, ' + kitsActivos().length + ' activos</span></div></section>';
   }
 
